@@ -10,20 +10,13 @@ A = np.array([
 
 b = np.array([1, 0, 0, 0], dtype=float)
 
-# Vérifier si la matrice est symétrique
-def is_symmetric(matrix):
-    if matrix == matrix.T :
-        return True
-    else:
-        return False
-     
 
-# Calcul du déterminant d'un mineur principal
+def is_symmetric(matrix):
+    return np.array_equal(matrix, matrix.T)
+
 def determinant_mineur_principal(matrix, n):
-    """Calcule le déterminant du mineur principal de taille n."""
     return np.linalg.det(matrix[:n, :n])
 
-# Vérifier si la matrice est définie positive (en utilisant les mineurs principaux)
 def is_positive_definite(matrix):
     n = matrix.shape[0]
     for i in range(1, n + 1):
@@ -32,8 +25,6 @@ def is_positive_definite(matrix):
         if det <= 0:
             return False
     return True
-
-# Décomposition de Cholesky manuelle : A = L * L^T
 def cholesky_manual(matrix):
     n = matrix.shape[0]
     L = np.zeros_like(matrix)
@@ -51,7 +42,6 @@ def cholesky_manual(matrix):
                 L[i][j] = (matrix[i][j] - sum_) / L[j][j]
     return L
 
-# Résolution L y = b (descente)
 def forward_substitution(L, b):
     n = len(b)
     y = np.zeros(n)
@@ -68,7 +58,7 @@ def backward_substitution(LT, y):
     return x
 
 # Vérifications
-print("✅ Matrice symétrique :", is_symmetric(A))
+print("Matrice symétrique :", is_symmetric(A))
 
 if is_positive_definite(A):
     print("Matrice définie positive : oui")
@@ -85,9 +75,9 @@ if is_positive_definite(A):
 
         # Comparaison avec numpy
         x_np = np.linalg.solve(A, b)
-        print("\n✅ Comparaison avec numpy.linalg.solve :\n", x_np)
+        print("\n Comparaison avec numpy.linalg.solve :\n", x_np)
 
     except ValueError as e:
         print("❌", e)
 else:
-    print("❌ La matrice n'est pas définie positive.")
+    print("La matrice n'est pas définie positive.")
